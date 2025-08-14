@@ -58,3 +58,7 @@ O projeto está organizado em sprints, cada uma com um objetivo claro para entre
 | **-** | Tarefa Técnica | Implementar um tratamento de erros mais detalhado (Ex: "Sem conexão", "QR Code inválido", etc.). |
 | **-** | Refinamento | Refinar a interface (UI) e a experiência do usuário (UX) em todas as telas. |
 | **-** | Tarefa Técnica | Adicionar testes unitários para as funções críticas (ex: chamada à API). |
+
+
+comandos
+json-server --watch db.json --port 3000
