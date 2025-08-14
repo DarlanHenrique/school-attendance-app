@@ -12,6 +12,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permitir que o $(PRODUCT_NAME) acesse sua câmera para registrar a frequência."
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true
     },
