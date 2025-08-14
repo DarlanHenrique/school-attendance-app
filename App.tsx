@@ -1,33 +1,28 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, ActivityIndicator } from 'react-native';
+import { View, TextInput, Button, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { useMatricula } from './src/hooks/useMatricula';
-
-const ScannerScreen = ({ matricula }: { matricula: string }) => {
-    return <Text>Logado com a matrícula: {matricula}. Pronto para escanear!</Text>
-}
+import { ScannerScreen } from './src/screens/ScannerScreen';
 
 const App = () => {
   const { matricula, saveMatricula, isLoading } = useMatricula();
   const [inputMatricula, setInputMatricula] = useState('');
 
   if (isLoading) {
-    return <ActivityIndicator size="large" />;
+    return <View style={styles.container}><ActivityIndicator size="large" /></View>;
   }
 
   if (matricula) {
     return <ScannerScreen matricula={matricula} />;
   }
-
+  
   return (
-    <View style={{ flex: 1, justifyContent: 'center', padding: 20 }}>
-      <Text style={{ fontSize: 20, textAlign: 'center' }}>
-        Digite sua Matrícula
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Digite sua Matrícula</Text>
       <TextInput
         placeholder="Ex: 20241010"
         value={inputMatricula}
         onChangeText={setInputMatricula}
-        style={{ borderWidth: 1, padding: 10, marginTop: 10 }}
+        style={styles.input}
         keyboardType="numeric"
       />
       <Button
@@ -41,5 +36,29 @@ const App = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1, 
+        justifyContent: 'center', 
+        padding: 20,
+        backgroundColor: '#f0f0f0'
+    },
+    title: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 20
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        backgroundColor: 'white',
+        padding: 12,
+        borderRadius: 8,
+        fontSize: 16,
+        marginBottom: 20
+    }
+})
 
 export default App;
