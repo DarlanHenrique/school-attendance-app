@@ -1,9 +1,18 @@
-import { useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MATRICULA_STORAGE_KEY = '@frequencia_app:matricula';
 
-export const useMatricula = () => {
+interface MatriculaContextData {
+  matricula: string | null;
+  isLoading: boolean;
+  saveMatricula: (matricula: string) => Promise<void>;
+  clearMatricula: () => Promise<void>;
+}
+
+const MatriculaContext = createContext<MatriculaContextData>({} as MatriculaContextData);
+
+export const MatriculaProvider = ({ children }: { children: ReactNode }) => {
   const [matricula, setMatricula] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -11,16 +20,13 @@ export const useMatricula = () => {
     const loadMatricula = async () => {
       try {
         const storedMatricula = await AsyncStorage.getItem(MATRICULA_STORAGE_KEY);
-        if (storedMatricula !== null) {
-          setMatricula(storedMatricula);
-        }
+        setMatricula(storedMatricula);
       } catch (e) {
         console.error('Falha ao carregar a matrícula.', e);
       } finally {
         setIsLoading(false);
       }
     };
-
     loadMatricula();
   }, []);
 
@@ -38,9 +44,21 @@ export const useMatricula = () => {
       await AsyncStorage.removeItem(MATRICULA_STORAGE_KEY);
       setMatricula(null);
     } catch (e) {
-        console.error('Falha ao limpar a matrícula.', e);
+      console.error('Falha ao limpar a matrícula.', e);
     }
-  }
+  };
 
-  return { matricula, saveMatricula, clearMatricula, isLoading };
+  return (
+    <MatriculaContext.Provider value={{ matricula, isLoading, saveMatricula, clearMatricula }}>
+      {children}
+    </MatriculaContext.Provider>
+  );
+};
+
+export const useMatricula = () => {
+  const context = useContext(MatriculaContext);
+  if (!context) {
+    throw new Error('useMatricula deve ser usado dentro de um MatriculaProvider');
+  }
+  return context;
 };

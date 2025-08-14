@@ -1,11 +1,9 @@
 const { promises: fs } = require('fs');
 const path = require('path');
 
-// Caminhos para nossos "bancos de dados"
 const LOG_FILE_PATH = path.join('/tmp', 'frequencia.log');
 const TURMAS_FILE_PATH = path.join(process.cwd(), 'api', 'turmas.json');
 
-// Funções auxiliares para leitura dos arquivos
 const readLog = async () => {
   try {
     const data = await fs.readFile(LOG_FILE_PATH, 'utf-8');
@@ -26,7 +24,6 @@ const readTurmas = async () => {
   }
 };
 
-
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Método não permitido' });
@@ -39,10 +36,16 @@ module.exports = async (req, res) => {
       return res.status(400).json({ message: 'Matrícula e qrCodeData são obrigatórios.' });
     }
 
+    console.log('--- DADOS DO QR CODE RECEBIDO ---');
+    console.log(`String Bruta: "${qrCodeData}"`);
+    console.log(`Tamanho da String: ${qrCodeData.length}`);
+    console.log('------------------------------------');
+
     let dadosDoQrCode;
     try {
-      dadosDoQrCode = JSON.parse(qrCodeData);
+      dadosDoQrCode = JSON.parse(qrCodeData.trim());
     } catch (e) {
+      console.error('Falha no JSON.parse:', e);
       return res.status(400).json({ message: 'QR Code não contém um JSON válido.' });
     }
 
@@ -52,7 +55,6 @@ module.exports = async (req, res) => {
       return res.status(400).json({ message: 'JSON do QR Code com dados ausentes.' });
     }
 
-    // --- NOVA ETAPA DE VALIDAÇÃO DE MATRÍCULA ---
     const turmas = await readTurmas();
     const alunosDaDisciplina = turmas[disciplina];
 
@@ -67,8 +69,6 @@ module.exports = async (req, res) => {
     if (!alunoEstaMatriculado) {
       return res.status(403).json({ message: `Sua matrícula não consta na disciplina de ${disciplina}.` });
     }
-    // --- FIM DA VALIDAÇÃO ---
-
 
     const allRecords = await readLog();
     const hoje = new Date().toISOString().split('T')[0];

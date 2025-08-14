@@ -1,13 +1,19 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
-import { useMatricula } from './src/hooks/useMatricula';
+// ==================================================================
+// A LINHA DE IMPORTAÇÃO CORRETA É ESTA AQUI
+// Note o uso das chaves {} para importar MatriculaProvider e useMatricula
+// ==================================================================
+import { MatriculaProvider, useMatricula } from './src/hooks/useMatricula';
+
 import { AppNavigator } from './src/navigation/AppNavigator';
 import { MatriculaScreen } from './src/screens/MatriculaScreen';
 
-const App = () => {
+const AppContent = () => {
   const { matricula, isLoading } = useMatricula();
 
   if (isLoading) {
@@ -15,17 +21,18 @@ const App = () => {
   }
 
   return (
-    <>
-      <NavigationContainer>
-        {matricula ? (
-          <AppNavigator />
-        ) : (
-          <MatriculaScreen />
-        )}
-      </NavigationContainer>
-      
+    <NavigationContainer>
+      {matricula ? <AppNavigator /> : <MatriculaScreen />}
+    </NavigationContainer>
+  );
+};
+
+const App = () => {
+  return (
+    <MatriculaProvider>
+      <AppContent />
       <Toast />
-    </>
+    </MatriculaProvider>
   );
 };
 

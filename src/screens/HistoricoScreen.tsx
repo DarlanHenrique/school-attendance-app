@@ -1,42 +1,42 @@
-// src/screens/HistoricoScreen.tsx
-import React, { useState, useEffect } from 'react';
-import { View, Text, SectionList, ActivityIndicator, StyleSheet, SafeAreaView } from 'react-native';
-// MUDANÇA: Importamos os novos tipos e o novo item de lista
+import React, { useState, useCallback } from 'react';
+import { View, Text, SectionList, ActivityIndicator, StyleSheet, SafeAreaView, Button } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { fetchHistorico, HistoricoSection } from '../services/api';
-import { HistoricoItemAula } from '../components/HistoricoItemAula'; // Verifique se o nome do arquivo corresponde
-import { useMatricula } from '../hooks/useMatricula';
+import { HistoricoItemAula } from '../components/HistoricoItemAula';
+import { useMatricula } from '../hooks/useMatricula'; 
 
 export const HistoricoScreen = () => {
-  const { matricula, isLoading: isMatriculaLoading } = useMatricula(); 
+  const { matricula, isLoading: isMatriculaLoading, clearMatricula } = useMatricula(); 
   
-  // MUDANÇA: O estado agora espera um array do tipo HistoricoSection
   const [historico, setHistorico] = useState<HistoricoSection[]>([]);
   const [isFetching, setIsFetching] = useState(true); 
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const carregarHistorico = async () => {
-      if (matricula) {
+  useFocusEffect(
+    useCallback(() => {
+      const carregarHistorico = async () => {
+        if (!matricula) {
+          setIsFetching(false);
+          return;
+        }
+
+        setIsFetching(true);
         try {
           const data = await fetchHistorico(matricula);
           setHistorico(data);
+          setError(null);
         } catch (err: any) {
           setError(err.message || "Não foi possível carregar o histórico.");
         } finally {
           setIsFetching(false);
         }
-      }
-    };
-    
-    if (!isMatriculaLoading) {
-      if (matricula) {
+      };
+     
+      if (!isMatriculaLoading) {
         carregarHistorico();
-      } else {
-        setError("Matrícula não encontrada.");
-        setIsFetching(false);
       }
-    }
-  }, [matricula, isMatriculaLoading]); 
+    }, [matricula, isMatriculaLoading])
+  );
 
   if (isMatriculaLoading || isFetching) {
     return <ActivityIndicator style={styles.centered} size="large" color="#0000ff" />;
@@ -48,7 +48,6 @@ export const HistoricoScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* MUDANÇA GIGANTE: Substituímos FlatList por SectionList */}
       <SectionList
         sections={historico}
         keyExtractor={(item, index) => item.id + index}
@@ -58,7 +57,16 @@ export const HistoricoScreen = () => {
         )}
         ListHeaderComponent={<Text style={styles.header}>Meu Histórico de Frequência</Text>}
         ListEmptyComponent={<View style={styles.centered}><Text>Nenhum registro encontrado.</Text></View>}
-        stickySectionHeadersEnabled // Faz o cabeçalho da seção "grudar" no topo ao rolar
+        ListFooterComponent={
+          <View style={styles.footerContainer}>
+            <Button
+              title="Sair (Logout)"
+              onPress={clearMatricula}
+              color="#e74c3c"
+            />
+          </View>
+        }
+        stickySectionHeadersEnabled
       />
     </SafeAreaView>
   );
@@ -92,5 +100,11 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
     textAlign: 'center',
+  },
+  footerContainer: {
+    margin: 20,
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#ddd'
   }
 });

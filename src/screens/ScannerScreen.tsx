@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ActivityIndicator, Text } from 'react-native';
 import { CameraView, Camera } from 'expo-camera';
 import Toast from 'react-native-toast-message';
-// MUDANÇA 1: Importar o hook useIsFocused do React Navigation
 import { useIsFocused } from '@react-navigation/native';
 
 import { registerFrequency } from '../services/api'; 
@@ -11,7 +10,6 @@ import { useMatricula } from '../hooks/useMatricula';
 export const ScannerScreen = () => {
   const { matricula, isLoading: isMatriculaLoading } = useMatricula();
   
-  // MUDANÇA 2: Chamar o hook para saber se a tela está em foco
   const isFocused = useIsFocused();
   
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -19,7 +17,6 @@ export const ScannerScreen = () => {
 
   useEffect(() => {
     const getCameraPermissions = async () => {
-      // Usamos a biblioteca do expo-camera para pedir permissão
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
     };
@@ -63,10 +60,7 @@ export const ScannerScreen = () => {
     return <View style={styles.container}><Text style={{ color: 'white' }}>Acesso à câmera negado.</Text></View>;
   }
 
-  // MUDANÇA 3: SÓ renderizamos a câmera se a tela estiver em foco!
-  // Isso garante que a câmera é montada do zero toda vez que o usuário volta para a aba.
   if (!isFocused) {
-    // Retorna um componente vazio ou um placeholder enquanto a tela não está focada
     return <View style={styles.container}><Text style={{color: 'white'}}>Carregando câmera...</Text></View>;
   }
 
