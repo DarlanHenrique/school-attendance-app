@@ -1,13 +1,16 @@
+// src/screens/HistoricoScreen.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet, SafeAreaView } from 'react-native';
-import { fetchHistorico, HistoricoEntry } from '../services/api';
-import { HistoricoItem } from '../components/HistoricoItem';
+import { View, Text, SectionList, ActivityIndicator, StyleSheet, SafeAreaView } from 'react-native';
+// MUDANÇA: Importamos os novos tipos e o novo item de lista
+import { fetchHistorico, HistoricoSection } from '../services/api';
+import { HistoricoItemAula } from '../components/HistoricoItemAula'; // Verifique se o nome do arquivo corresponde
 import { useMatricula } from '../hooks/useMatricula';
 
 export const HistoricoScreen = () => {
   const { matricula, isLoading: isMatriculaLoading } = useMatricula(); 
   
-  const [historico, setHistorico] = useState<HistoricoEntry[]>([]);
+  // MUDANÇA: O estado agora espera um array do tipo HistoricoSection
+  const [historico, setHistorico] = useState<HistoricoSection[]>([]);
   const [isFetching, setIsFetching] = useState(true); 
   const [error, setError] = useState<string | null>(null);
 
@@ -17,8 +20,8 @@ export const HistoricoScreen = () => {
         try {
           const data = await fetchHistorico(matricula);
           setHistorico(data);
-        } catch (err) {
-          setError("Não foi possível carregar o histórico.");
+        } catch (err: any) {
+          setError(err.message || "Não foi possível carregar o histórico.");
         } finally {
           setIsFetching(false);
         }
@@ -45,12 +48,17 @@ export const HistoricoScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={historico}
-        renderItem={({ item }) => <HistoricoItem item={item} />}
-        keyExtractor={(item) => item.id}
+      {/* MUDANÇA GIGANTE: Substituímos FlatList por SectionList */}
+      <SectionList
+        sections={historico}
+        keyExtractor={(item, index) => item.id + index}
+        renderItem={({ item }) => <HistoricoItemAula item={item} />}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={styles.sectionHeader}>{title.replace(/_/g, ' ')}</Text>
+        )}
         ListHeaderComponent={<Text style={styles.header}>Meu Histórico de Frequência</Text>}
         ListEmptyComponent={<View style={styles.centered}><Text>Nenhum registro encontrado.</Text></View>}
+        stickySectionHeadersEnabled // Faz o cabeçalho da seção "grudar" no topo ao rolar
       />
     </SafeAreaView>
   );
@@ -70,8 +78,15 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    margin: 20,
+    marginVertical: 20,
     textAlign: 'center',
+  },
+  sectionHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    backgroundColor: '#e9ecef',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
   },
   errorText: {
     color: 'red',

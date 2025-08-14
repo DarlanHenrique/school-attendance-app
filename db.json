@@ -1,3 +1,69 @@
 {
-  "frequencias": []
+  "frequencias": [
+    {
+      "id": "6c31",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "524d",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "9bce",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "f4da",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "c3cd",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "6adb",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "7eeb",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "2599",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "2719",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "4cbd",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "56bc",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "b3a9",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    },
+    {
+      "id": "ee45",
+      "matricula": "202176038",
+      "qrCodeData": "SISTEMAS_DISTRIBUIDOS_2025\n\nAULA_DE_SEGUNDA_19H\n\nsenhaSuperSecreta123"
+    }
+  ]
 }

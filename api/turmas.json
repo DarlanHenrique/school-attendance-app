@@ -1,0 +1,22 @@
+{
+  "DESENVOLVIMENTO MOBILE": [
+    { "nome": "Darlan Silva", "matricula": "202176038" },
+    { "nome": "Maria Oliveira", "matricula": "202176039" },
+    { "nome": "Ana Souza", "matricula": "202176041" },
+    { "nome": "Carlos Pereira", "matricula": "202176040" },
+    { "nome": "João Silva", "matricula": "202176042" },
+    { "nome": "Joana Kelmer", "matricula": "202176043" }
+  ],
+  "SISTEMAS DISTRIBUIDOS": [
+    { "nome": "Darlan Silva", "matricula": "202176038" },
+    { "nome": "Carlos Pereira", "matricula": "202176040" },
+    { "nome": "João Silva", "matricula": "202176042" },
+    { "nome": "Joana Kelmer", "matricula": "202176043" }
+  ],
+  "CALCULO DE PROBABILIDADE": [
+    { "nome": "Maria Oliveira", "matricula": "202176039" },
+    { "nome": "Ana Souza", "matricula": "202176041" },
+    { "nome": "Carlos Pereira", "matricula": "202176040" }
+
+  ]
+}

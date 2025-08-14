@@ -1,25 +1,29 @@
+// src/components/HistoricoItemAula.tsx
+
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { HistoricoEntry } from '../services/api'; 
+import { HistoricoAula } from '../services/api';
 
 type Props = {
-  item: HistoricoEntry;
+  item: HistoricoAula;
 };
 
+// Função para formatar a data (AAAA-MM-DD -> DD/MM/AAAA)
 const formatDate = (dateString: string) => {
     const [year, month, day] = dateString.split('-');
     return `${day}/${month}/${year}`;
 }
 
-export const HistoricoItem = ({ item }: Props) => {
+export const HistoricoItemAula = ({ item }: Props) => {
   const isPresente = item.status === 'Presente';
   
   return (
     <View style={styles.container}>
       <View style={[styles.statusIndicator, { backgroundColor: isPresente ? '#2ecc71' : '#e74c3c' }]} />
       <View style={styles.infoContainer}>
-        <Text style={styles.disciplina}>{item.disciplina}</Text>
-        <Text style={styles.data}>Data: {formatDate(item.data)}</Text>
+        {/* MUDANÇA: Exibe a data da presença e, abaixo, a descrição completa da aula */}
+        <Text style={styles.dataText}>Data: {formatDate(item.data)}</Text>
+        <Text style={styles.descricaoText}>{item.descricao}</Text>
       </View>
       <Text style={[styles.statusText, { color: isPresente ? '#2ecc71' : '#e74c3c' }]}>
         {item.status.toUpperCase()}
@@ -28,6 +32,7 @@ export const HistoricoItem = ({ item }: Props) => {
   );
 };
 
+// Estilos levemente ajustados para a nova estrutura de texto
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -52,14 +57,15 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
   },
-  disciplina: {
+  dataText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
   },
-  data: {
+  descricaoText: {
     fontSize: 14,
     color: '#666',
+    marginTop: 2,
   },
   statusText: {
     fontSize: 14,
