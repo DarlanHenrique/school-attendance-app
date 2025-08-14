@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { HistoricoEntry } from '../services/api'; // Importamos nosso tipo
+import { HistoricoEntry } from '../services/api'; 
 
 type Props = {
   item: HistoricoEntry;

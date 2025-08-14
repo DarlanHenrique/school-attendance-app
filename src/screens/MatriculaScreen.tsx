@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
-import { useMatricula } from '../hooks/useMatricula'; // Importamos o hook aqui
+import { useMatricula } from '../hooks/useMatricula'; 
 
 export const MatriculaScreen = () => {
   const { saveMatricula } = useMatricula(); 

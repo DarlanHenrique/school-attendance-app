@@ -8,7 +8,6 @@ export const useMatricula = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Função para carregar a matrícula do storage ao iniciar o app
     const loadMatricula = async () => {
       try {
         const storedMatricula = await AsyncStorage.getItem(MATRICULA_STORAGE_KEY);
@@ -25,7 +24,6 @@ export const useMatricula = () => {
     loadMatricula();
   }, []);
 
-  // Função para salvar uma nova matrícula
   const saveMatricula = async (newMatricula: string) => {
     try {
       await AsyncStorage.setItem(MATRICULA_STORAGE_KEY, newMatricula);
@@ -35,7 +33,6 @@ export const useMatricula = () => {
     }
   };
 
-  // Função para limpar a matrícula
   const clearMatricula = async () => {
     try {
       await AsyncStorage.removeItem(MATRICULA_STORAGE_KEY);
