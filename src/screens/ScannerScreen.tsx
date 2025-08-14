@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ActivityIndicator, Text } from 'react-native';
 import { Camera, CameraView } from 'expo-camera';
 import Toast from 'react-native-toast-message';
-import { registerFrequency } from '../services/api';
+import { registerFrequency } from '../services/api'; 
+import { useMatricula } from '../hooks/useMatricula';
 
-interface ScannerScreenProps {
-  matricula: string;
-}
+export const ScannerScreen = () => {
+  const { matricula, isLoading: isMatriculaLoading } = useMatricula();
 
-export const ScannerScreen = ({ matricula }: ScannerScreenProps) => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [isRegistering, setIsRegistering] = useState(false);
 
@@ -21,11 +20,10 @@ export const ScannerScreen = ({ matricula }: ScannerScreenProps) => {
   }, []);
 
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
-    if (isRegistering) return;
+    if (isRegistering || !matricula) return;
     setIsRegistering(true);
 
     try {
-      // Chama a função do nosso serviço de API
       await registerFrequency({ matricula, qrCodeData: data });
 
       Toast.show({
@@ -44,11 +42,19 @@ export const ScannerScreen = ({ matricula }: ScannerScreenProps) => {
     }
   };
 
+  if (isMatriculaLoading) {
+    return <View style={styles.container}><ActivityIndicator size="large" color="#FFFFFF" /></View>;
+  }
+  
+  if (!matricula) {
+    return <View style={styles.container}><Text style={{ color: 'white' }}>Erro: Matrícula não encontrada. Volte e tente novamente.</Text></View>;
+  }
+
   if (hasPermission === null) {
-    return <View style={styles.container}><Text>Solicitando permissão...</Text></View>;
+    return <View style={styles.container}><Text style={{ color: 'white' }}>Solicitando permissão...</Text></View>;
   }
   if (hasPermission === false) {
-    return <View style={styles.container}><Text>Acesso à câmera negado.</Text></View>;
+    return <View style={styles.container}><Text style={{ color: 'white' }}>Acesso à câmera negado.</Text></View>;
   }
 
   return (

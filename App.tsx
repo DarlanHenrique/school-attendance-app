@@ -1,35 +1,15 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, Text, ActivityIndicator, StyleSheet } from 'react-native';
+// App.tsx
+import React from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import { useMatricula } from './src/hooks/useMatricula';
-import { ScannerScreen } from './src/screens/ScannerScreen';
 
-const LoginScreen = ({ onLogin }: { onLogin: (matricula: string) => void }) => {
-  const [inputMatricula, setInputMatricula] = useState('');
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Digite sua Matrícula</Text>
-      <TextInput
-        placeholder="Ex: 20241010"
-        value={inputMatricula}
-        onChangeText={setInputMatricula}
-        style={styles.input}
-        keyboardType="numeric"
-      />
-      <Button
-        title="Salvar e Entrar"
-        onPress={() => {
-          if (inputMatricula.trim()) {
-            onLogin(inputMatricula.trim());
-          }
-        }}
-      />
-    </View>
-  );
-};
+import { useMatricula } from './src/hooks/useMatricula';
+import { AppNavigator } from './src/navigation/AppNavigator';
+import { MatriculaScreen } from './src/screens/MatriculaScreen';
 
 const App = () => {
-  const { matricula, saveMatricula, isLoading } = useMatricula();
+  const { matricula, isLoading } = useMatricula();
 
   if (isLoading) {
     return <View style={styles.container}><ActivityIndicator size="large" /></View>;
@@ -37,11 +17,13 @@ const App = () => {
 
   return (
     <>
-      {matricula ? (
-        <ScannerScreen matricula={matricula} />
-      ) : (
-        <LoginScreen onLogin={saveMatricula} />
-      )}
+      <NavigationContainer>
+        {matricula ? (
+          <AppNavigator />
+        ) : (
+          <MatriculaScreen />
+        )}
+      </NavigationContainer>
       
       <Toast />
     </>
@@ -52,23 +34,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    alignItems: 'center',
     backgroundColor: '#f0f0f0'
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: 'white',
-    padding: 12,
-    borderRadius: 8,
-    fontSize: 16,
-    marginBottom: 20
   }
 });
 

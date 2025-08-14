@@ -1,0 +1,68 @@
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { HistoricoEntry } from '../services/api'; // Importamos nosso tipo
+
+type Props = {
+  item: HistoricoEntry;
+};
+
+const formatDate = (dateString: string) => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+}
+
+export const HistoricoItem = ({ item }: Props) => {
+  const isPresente = item.status === 'Presente';
+  
+  return (
+    <View style={styles.container}>
+      <View style={[styles.statusIndicator, { backgroundColor: isPresente ? '#2ecc71' : '#e74c3c' }]} />
+      <View style={styles.infoContainer}>
+        <Text style={styles.disciplina}>{item.disciplina}</Text>
+        <Text style={styles.data}>Data: {formatDate(item.data)}</Text>
+      </View>
+      <Text style={[styles.statusText, { color: isPresente ? '#2ecc71' : '#e74c3c' }]}>
+        {item.status.toUpperCase()}
+      </Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 15,
+    marginVertical: 5,
+    marginHorizontal: 10,
+    borderRadius: 8,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+  },
+  statusIndicator: {
+    width: 10,
+    height: '100%',
+    borderRadius: 5,
+    marginRight: 15,
+  },
+  infoContainer: {
+    flex: 1,
+  },
+  disciplina: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  data: {
+    fontSize: 14,
+    color: '#666',
+  },
+  statusText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+});
